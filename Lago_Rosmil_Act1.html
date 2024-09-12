@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Writing DOM</title>
+</head>
+<body>
+
+<div id="app"></div>
+
+<script>
+  const app = document.getElementById('app');
+
+  const form = document.createElement('form');
+  form.style.backgroundColor = 'whitesmoke';
+  form.style.padding = '30px';
+  form.style.borderRadius = '8px';
+  form.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
+  form.style.width = '300px';
+  form.style.margin = '0 auto';
+  form.style.fontFamily = 'Arial, sans-serif';
+
+  const createInputField = (labelText, type, id) => {
+    const container = document.createElement('div');
+    container.style.marginBottom = '15px';
+
+    const label = document.createElement('label');
+    label.textContent = labelText;
+    label.setAttribute('for', id);
+    label.style.fontWeight = 'bold';
+    label.style.display = 'block';
+    label.style.marginBottom = '5px';
+
+    const input = document.createElement('input');
+    input.type = type;
+    input.id = id;
+    input.style.width = '95%';
+    input.style.padding = '8px';
+    input.style.marginTop = '2px';
+    input.style.border = '1px solid #ccc';
+    input.style.borderRadius = '4px';
+    input.style.fontSize = '14px';
+
+    input.addEventListener('focus', () => {
+      input.style.borderColor = 'plum';
+    });
+
+    input.addEventListener('blur', () => {
+      input.style.borderColor = '#ccc';
+    });
+
+    container.appendChild(label);
+    container.appendChild(input);
+
+    return container;
+  };
+
+  const firstNameField = createInputField('First Name:', 'text', 'firstName');
+  const lastNameField = createInputField('Last Name:', 'text', 'lastName');
+  const emailField = createInputField('Email:', 'email', 'email');
+  const passwordField = createInputField('Password:', 'password', 'password');
+  const confirmPasswordField = createInputField('Confirm Password:', 'password', 'confirmPassword');
+
+  const emailWarning = document.createElement('span');
+  emailWarning.textContent = 'Invalid email format!';
+  emailWarning.style.display = 'none';
+  emailWarning.style.color = 'red';
+  emailWarning.style.fontSize = '12px';
+  emailWarning.style.marginTop = '5px';
+
+  emailField.querySelector('input').addEventListener('input', (e) => {
+    const email = e.target.value;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    emailWarning.style.display = emailRegex.test(email) ? 'none' : 'block';
+  });
+
+  // Error message for password mismatch
+  const passwordMismatchWarning = document.createElement('span');
+  passwordMismatchWarning.textContent = 'Passwords do not match!';
+  passwordMismatchWarning.style.display = 'none';
+  passwordMismatchWarning.style.color = 'red';
+  passwordMismatchWarning.style.fontSize = '12px';
+  passwordMismatchWarning.style.marginTop = '5px';
+
+  form.appendChild(firstNameField);
+  form.appendChild(lastNameField);
+  form.appendChild(emailField);
+  form.appendChild(emailWarning);
+  form.appendChild(passwordField);
+  form.appendChild(confirmPasswordField);
+  form.appendChild(passwordMismatchWarning);
+
+  const submitButton = document.createElement('input');
+  submitButton.type = 'submit';
+  submitButton.value = 'Register';
+  submitButton.style.backgroundColor = 'blue';
+  submitButton.style.color = 'white';
+  submitButton.style.border = 'none';
+  submitButton.style.padding = '10px';
+  submitButton.style.borderRadius = '4px';
+  submitButton.style.cursor = 'pointer';
+  submitButton.style.fontSize = '16px';
+  submitButton.style.width = '100%';
+
+  submitButton.addEventListener('mouseover', () => {
+    submitButton.style.backgroundColor = 'skyblue';
+  });
+
+  submitButton.addEventListener('mouseout', () => {
+    submitButton.style.backgroundColor = 'blue';
+  });
+
+  form.appendChild(submitButton);
+
+  // Add success message container
+  const successMessage = document.createElement('div');
+  successMessage.textContent = 'You are successfully registered!';
+  successMessage.style.display = 'none';
+  successMessage.style.color = 'green';
+  successMessage.style.fontSize = '16px';
+  successMessage.style.textAlign = 'center';
+  successMessage.style.marginTop = '15px';
+
+  form.appendChild(successMessage);
+
+  // Handle form submission
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    const password = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+
+    // Validate password match
+    if (password !== confirmPassword) {
+      passwordMismatchWarning.style.display = 'block';
+      successMessage.style.display = 'none';
+    } else {
+      passwordMismatchWarning.style.display = 'none';
+      successMessage.style.display = 'block';
+    }
+  });
+
+  app.appendChild(form);
+
+  // Centering the form container
+  document.body.style.display = 'flex';
+  document.body.style.justifyContent = 'center';
+  document.body.style.alignItems = 'center';
+  document.body.style.height = '100vh';
+  document.body.style.margin = '0';
+  document.body.style.backgroundColor = '#ffc0cb';
+  document.body.style.fontFamily = 'Arial, sans-serif';
+</script>
+
+</body>
+</html>
